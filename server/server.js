@@ -18,6 +18,29 @@ io.on('connection', (socket)=>{
   socket.on('disconnect', () => {
     console.log('Disconnected to client!');
   });
+
+// custom function -- from client to server -- eg- sending email
+  socket.on('createEmail', (em)=>{
+    console.log("Created new email", em);
+  })
+
+  socket.on('createMessage', (msg)=>{
+    console.log("Created new message: ", msg);
+  })
+
+// Run newEmail function from index.js
+  socket.emit('newEmail', {
+    from: 'example@example.com',
+    msg: 'Hello socket!',
+    time: '1234321'
+  });
+
+  socket.emit('newMessage', {
+    from: 'jenni@example.com',
+    text: 'hello John',
+    time: 12344321
+  })
+
 })
 
 server.listen(port, (err)=>{
