@@ -29,6 +29,19 @@ io.on('connection', (socket)=>{
     })
   })
 
+  // socket.emit runs function for current user and not for rest users
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to the chat app!',
+    createdAt: new Date().getTime()
+  })
+
+  // socket.broadcast.emit runs function for rest but not for current user
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user joined.',
+    createdAt: new Date().getTime()
+  })
 })
 
 server.listen(port, (err)=>{
