@@ -1,8 +1,10 @@
+var moment = require('moment')
+
 let messageObject = (from, text)=>{
   return {
     from,
     text,
-    createdAt: new Date().getTime()
+    createdAt: moment().format('MMMM Do YYYY, h:mm:ss')
   }
 }
 
@@ -10,7 +12,7 @@ let messageLocationObject = (from, lat, long)=>{
   return {
     from,
     map: `https://www.google.co.in/maps/place/${lat},${long}`,
-    createdAt: new Date().getTime()
+    createdAt: moment().format('MMMM Do YYYY, h:mm:ss')
   }
 }
 
