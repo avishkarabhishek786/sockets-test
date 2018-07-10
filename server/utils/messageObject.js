@@ -6,4 +6,12 @@ let messageObject = (from, text)=>{
   }
 }
 
-module.exports = {messageObject}
+let messageLocationObject = (from, lat, long)=>{
+  return {
+    from,
+    map: `https://www.google.co.in/maps/place/${lat},${long}`,
+    createdAt: new Date().getTime()
+  }
+}
+
+module.exports = {messageObject, messageLocationObject}

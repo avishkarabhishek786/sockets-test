@@ -2,7 +2,7 @@ let path = require('path')
 let http = require('http')
 let express = require('express')
 let socketIO = require('socket.io')
-let {messageObject} = require('./utils/messageObject.js')
+let {messageObject, messageLocationObject} = require('./utils/messageObject.js')
 
 const publicPath = path.join(__dirname, '../public')
 const port = process.env.PORT || 3000;
@@ -32,6 +32,12 @@ io.on('connection', (socket)=>{
 
   // socket.broadcast.emit runs function for rest but not for current user
   socket.broadcast.emit('newMessage', messageObject('Admin', 'New user joined.'))
+
+  // geo location
+  socket.on('createLocationMesssage', (coords, callback)=> {
+    io.emit('newLocationMessage', messageLocationObject('Admin', coords.latitude, coords.longitude))
+    callback("Location cordinates delivered.") // You must pass a function as second arg in socket.emit() if callback is used here
+  });
 })
 
 server.listen(port, (err)=>{
