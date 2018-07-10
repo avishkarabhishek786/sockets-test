@@ -21,9 +21,10 @@ io.on('connection', (socket)=>{
   });
 
   //custom function -- from client to server -- eg- sending message
-  socket.on('createMessage', (msg)=>{
+  socket.on('createMessage', (msg, callback)=>{
     console.log("Created new message: ", msg);
-    io.emit('newMessage', messageObject(msg.from, msg.text))
+    io.emit('newMessage', messageObject(msg.from, msg.text)) // msg.from and text are defined during fn call i.e socket.emit()
+    callback('Your message was sent successfully!')
   })
 
   // socket.emit runs function for current user and not for rest users

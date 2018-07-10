@@ -5,9 +5,17 @@
     <title>Home</title>
   </head>
   <body>
-    <p>Hello Socket</p>
+    <h2>Welcome to the Chat App</h2>
+
+    <div id="chat-form">
+      <input type="text" name="form-text" placeholder="Enter message" id="form-text">
+      <input type="submit" name="sub-btn" id="sub-btn" value="Send">
+    </div>
+
+    <ul id="chat-ul"></ul>
   </body>
 </html>
 
+<script src="/js/libs/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
