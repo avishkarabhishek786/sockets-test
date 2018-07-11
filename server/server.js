@@ -3,6 +3,7 @@ let http = require('http')
 let express = require('express')
 let socketIO = require('socket.io')
 let {messageObject, messageLocationObject} = require('./utils/messageObject.js')
+const {realString} = require('./utils/validation');
 
 const publicPath = path.join(__dirname, '../public')
 const port = process.env.PORT || 3000;
@@ -20,18 +21,28 @@ io.on('connection', (socket)=>{
     console.log('Disconnected to client!');
   });
 
+  socket.on('join', (params, callback)=>{
+    if (!realString(params.name) || !realString(params.room)) {
+      callback("Please specify correct name and room")
+    }
+
+    socket.join(params.room)
+
+    // socket.emit runs function for current user and not for rest users
+    socket.emit('newMessage', messageObject('Admin', 'Welcome to the chat app!'))
+
+    // socket.broadcast.emit runs function for rest but not for current user
+    socket.broadcast.to(params.room).emit('newMessage', messageObject('Admin', `${params.name} joined.`))
+
+    callback()
+  })
+
   //custom function -- from client to server -- eg- sending message
   socket.on('createMessage', (msg, callback)=>{
     console.log("Created new message: ", msg);
     io.emit('newMessage', messageObject(msg.from, msg.text)) // msg.from and text are defined during fn call i.e socket.emit()
     callback('Your message was sent successfully!')
   })
-
-  // socket.emit runs function for current user and not for rest users
-  socket.emit('newMessage', messageObject('Admin', 'Welcome to the chat app!'))
-
-  // socket.broadcast.emit runs function for rest but not for current user
-  socket.broadcast.emit('newMessage', messageObject('Admin', 'New user joined.'))
 
   // geo location
   socket.on('createLocationMesssage', (coords, callback)=> {
